@@ -34,22 +34,26 @@ public class ContatoController {
 
     @PostMapping("/")
     public ResponseEntity<Void> insert(@Validated @RequestBody ContatoRequestDTO dto) {
-        Contato objContato = contatoService.insert(dto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(objContato.getId()).toUri();
+        ContatoResponseDTO contatoDTO = contatoService.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(contatoDTO.id()).toUri();
         return ResponseEntity.created(uri).build();
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@Validated @RequestBody ContatoRequestDTO contatoRequestDTO, @PathVariable Long id) {
-        contatoService.update(id);
+    public ResponseEntity<Void> update(@Validated @RequestBody ContatoRequestDTO dto, @PathVariable Long id) {
+        ContatoResponseDTO contatoDTO = this.contatoService.findById(id);
+        if(contatoDTO.id() != null){
+            contatoService.update(dto,id);
+            return ResponseEntity.ok().build();
+        }
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable("id") Long id){
-        ContatoResponseDTO contato = this.contatoService.findById(id);
-        if(contato.id() != null){
-            this.contatoService.delete(contato.id());
+        ContatoResponseDTO contatoDTO = this.contatoService.findById(id);
+        if(contatoDTO.id() != null){
+            this.contatoService.delete(contatoDTO.id());
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();

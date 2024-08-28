@@ -6,7 +6,6 @@ import br.com.agendamento.api.entities.Contato;
 import br.com.agendamento.api.repositories.ContatoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -44,7 +43,7 @@ public class ContatoService {
     }
 
     @Transactional
-    public Contato insert(ContatoRequestDTO dto) {
+    public ContatoResponseDTO insert(ContatoRequestDTO dto) {
         Contato contato =  new Contato();
         contato.setId(null);
 
@@ -56,19 +55,27 @@ public class ContatoService {
         contato.setAtivo(dto.ativo() ? "S" : "N");
         contato.setData_hora(new Date());
 
-        return contatoRepository.save(contato);
+        return this.createContatoResponseDTO(contatoRepository.save(contato));
     }
 
-    public ContatoResponseDTO update(Long id) {
-        Optional<Contato> contato = contatoRepository.findById(id);
-        return this.createContatoResponseDTO(contatoRepository.save(contato.get()));
+    public void update(ContatoRequestDTO dto, Long id) {
+        Contato contato =  new Contato();
+        contato.setId(id);
+
+        contato.setNome(dto.nome());
+        contato.setEmail(dto.email());
+        contato.setCelular(dto.celular());
+        contato.setTelefone(dto.telefone());
+        contato.setFavorito(dto.favorito() ? "S" : "N");
+        contato.setAtivo(dto.ativo() ? "S" : "N");
+        contato.setData_hora(new Date());
+
+        contatoRepository.save(contato);
     }
 
     public void delete(Long id) {
         Optional<Contato> contato = contatoRepository.findById(id);
-        if(contato.isPresent()){
-            this.contatoRepository.delete(contato.get());
-        }
+        contato.ifPresent(value -> this.contatoRepository.delete(value));
     }
     
     
