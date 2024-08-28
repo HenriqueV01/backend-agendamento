@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Entity
-@Table(name = "contato")
+@Table(schema = "desafio", name = "contato")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,9 +27,9 @@ public class Contato {
     @Column(name = "contato_telefone")
     private String telefone;
     @Column(name = "contato_sn_favorito")
-    private Boolean favorito;
+    private String favorito;
     @Column(name = "contato_sn_ativo")
-    private Boolean ativo;
+    private String ativo;
     @Column(name = "contato_dh_cad")
     private Date data_hora;
 
