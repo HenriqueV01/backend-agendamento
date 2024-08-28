@@ -1,4 +1,4 @@
-package br.com.agendamento.api.entity;
+package br.com.agendamento.api.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
