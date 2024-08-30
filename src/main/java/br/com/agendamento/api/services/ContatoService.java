@@ -8,6 +8,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +30,7 @@ public class ContatoService {
                 contato.getTelefone(),
                 contato.getFavorito().equals("S"),
                 contato.getAtivo().equals("S"),
-                contato.getData_hora()
+                contato.getData_hora().toString()
         );
     }
 
@@ -43,7 +46,14 @@ public class ContatoService {
     }
 
     @Transactional
-    public ContatoResponseDTO insert(ContatoRequestDTO dto) {
+    public ContatoResponseDTO insert(ContatoRequestDTO dto) throws ParseException {
+
+        Optional<Contato> existe = contatoRepository.findByCelular(dto.celular());
+
+        if(existe.isPresent()){
+            return this.createContatoResponseDTO(new Contato());
+        }
+
         Contato contato =  new Contato();
         contato.setId(null);
 
@@ -55,27 +65,52 @@ public class ContatoService {
         contato.setAtivo(dto.ativo() ? "S" : "N");
         contato.setData_hora(new Date());
 
-        return this.createContatoResponseDTO(contatoRepository.save(contato));
-    }
+        contatoRepository.save(contato);
 
-    public void update(ContatoRequestDTO dto, Long id) {
+        return this.createContatoResponseDTO(contato);
+    }
+    @Transactional
+    public ContatoResponseDTO update(ContatoRequestDTO dto, Long id) throws ParseException {
+
+
+
+        contatoRepository.findByCelular(dto.celular());
+
         Contato contato =  new Contato();
         contato.setId(id);
 
         contato.setNome(dto.nome());
         contato.setEmail(dto.email());
+//        if(contatoRepository.findByCelular(dto.celular()).isEmpty()){
+//            contato.setCelular(dto.celular());
+//        }
+
         contato.setCelular(dto.celular());
+
         contato.setTelefone(dto.telefone());
         contato.setFavorito(dto.favorito() ? "S" : "N");
         contato.setAtivo(dto.ativo() ? "S" : "N");
         contato.setData_hora(new Date());
 
         contatoRepository.save(contato);
-    }
 
+        return this.createContatoResponseDTO(contato);
+    }
+    @Transactional
     public void delete(Long id) {
         Optional<Contato> contato = contatoRepository.findById(id);
         contato.ifPresent(value -> this.contatoRepository.delete(value));
+    }
+
+    protected String converteData(java.util.Date dtData){
+        SimpleDateFormat formatBra;
+        formatBra = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+        try {
+            java.util.Date newData = formatBra.parse(dtData.toString());
+            return (formatBra.format(newData));
+        } catch (ParseException Ex) {
+            return "Erro na conversão da data";
+        }
     }
     
     

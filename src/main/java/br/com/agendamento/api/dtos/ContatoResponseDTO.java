@@ -10,7 +10,7 @@ public record ContatoResponseDTO(
         String telefone,
         Boolean favorito,
         Boolean ativo,
-        Date data_hota
+        String data_hora
 ) {
 
 }

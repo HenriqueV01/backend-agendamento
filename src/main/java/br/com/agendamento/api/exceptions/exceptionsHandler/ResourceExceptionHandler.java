@@ -17,7 +17,7 @@ public class ResourceExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<StandardError> noSuchElementException(NoSuchElementException e, HttpServletRequest request){
 
-        StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), e.getMessage(), System.currentTimeMillis());
+        StandardError err = new StandardError(HttpStatus.NOT_FOUND.value(), "Objeto não encontrado.", System.currentTimeMillis());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err);
 

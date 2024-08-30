@@ -1,5 +1,7 @@
 package br.com.agendamento.api.dtos;
 
+import java.util.Date;
+
 public record ContatoRequestDTO(
         String nome,
         String email,
@@ -7,7 +9,7 @@ public record ContatoRequestDTO(
         String telefone,
         Boolean favorito,
         Boolean ativo,
-        Long data_hota
+        Date data_hora
 
 ) {
 }

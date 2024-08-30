@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/contatos")
+@CrossOrigin(origins = "http://localhost:8080")
 public class ContatoController {
     @Autowired
     private ContatoService contatoService;
@@ -33,28 +35,27 @@ public class ContatoController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Void> insert(@Validated @RequestBody ContatoRequestDTO dto) {
+    public ResponseEntity<ContatoResponseDTO> insert(@Validated @RequestBody ContatoRequestDTO dto) throws ParseException {
         ContatoResponseDTO contatoDTO = contatoService.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(contatoDTO.id()).toUri();
-        return ResponseEntity.created(uri).build();
+        return ResponseEntity.created(uri).body(contatoDTO);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Void> update(@Validated @RequestBody ContatoRequestDTO dto, @PathVariable Long id) {
-        ContatoResponseDTO contatoDTO = this.contatoService.findById(id);
+    public ResponseEntity<ContatoResponseDTO> update(@PathVariable Long id, @Validated @RequestBody ContatoRequestDTO dto) throws ParseException {
+        ContatoResponseDTO contatoDTO = this.contatoService.findById(id); // Verificar se existe o contato.
         if(contatoDTO.id() != null){
-            contatoService.update(dto,id);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(contatoService.update(dto,id));
         }
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable("id") Long id){
+    public ResponseEntity<ContatoResponseDTO> delete(@PathVariable("id") Long id){
         ContatoResponseDTO contatoDTO = this.contatoService.findById(id);
         if(contatoDTO.id() != null){
             this.contatoService.delete(contatoDTO.id());
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body(contatoDTO);
         }
         return ResponseEntity.notFound().build();
     }
