@@ -30,11 +30,13 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() //Tem que modificar para permitir apenas ADMIN
+                        .requestMatchers(HttpMethod.POST, "/**").hasRole("ADMIN")
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.POST, "/swagger-ui/index.html#/contato-controller/insert").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/*").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/api/contatos").hasRole("ADMIN")
                         .anyRequest().authenticated()
