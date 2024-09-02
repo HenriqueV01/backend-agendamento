@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -38,6 +39,7 @@ public class ContatoController {
         return ResponseEntity.ok().body(contato);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
     public ResponseEntity<ContatoResponseDTO> insert(@Validated @RequestBody ContatoRequestDTO dto) throws ParseException {
         ContatoResponseDTO contatoDTO = contatoService.insert(dto);
