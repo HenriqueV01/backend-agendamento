@@ -12,7 +12,7 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group("public")
                 .pathsToMatch("/api/**")
-                .packagesToScan("br.com.agendamento.api.controllers.ContatoController")
+                .packagesToScan("br.com.agendamento.api.controllers")
                 .build();
     }
 }

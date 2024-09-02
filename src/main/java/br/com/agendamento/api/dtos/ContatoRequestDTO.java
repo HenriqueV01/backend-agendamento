@@ -9,7 +9,7 @@ public record ContatoRequestDTO(
         String telefone,
         Boolean favorito,
         Boolean ativo,
-        Date data_hora
+        String data_hora
 
 ) {
 }

@@ -4,6 +4,7 @@ import br.com.agendamento.api.dtos.ContatoRequestDTO;
 import br.com.agendamento.api.dtos.ContatoResponseDTO;
 import br.com.agendamento.api.entities.Contato;
 import br.com.agendamento.api.services.ContatoService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,8 +23,9 @@ public class ContatoController {
     @Autowired
     private ContatoService contatoService;
 
+    @Operation(summary = "Retorna uma lista com todos os contatos")
     @GetMapping("/")
-    public ResponseEntity<List<ContatoResponseDTO>> findAll() {
+    public ResponseEntity<List<ContatoResponseDTO>> findAll(@RequestHeader(value = "Authorization", required = true) String authorizationHeader) {
         List<ContatoResponseDTO> listContatos = contatoService.findAll();
         return ResponseEntity.ok().body(listContatos);
     }

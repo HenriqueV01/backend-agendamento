@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
@@ -31,7 +32,7 @@ public class Contato {
     @Column(name = "contato_sn_ativo")
     private String ativo;
     @Column(name = "contato_dh_cad")
-    private Date data_hora;
+    private LocalDateTime data_hora;
 
 
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -63,7 +64,7 @@ public class ContatoService {
         contato.setTelefone(dto.telefone());
         contato.setFavorito(dto.favorito() ? "S" : "N");
         contato.setAtivo(dto.ativo() ? "S" : "N");
-        contato.setData_hora(new Date());
+        contato.setData_hora(LocalDateTime.now());
 
         contatoRepository.save(contato);
 
@@ -90,7 +91,7 @@ public class ContatoService {
         contato.setTelefone(dto.telefone());
         contato.setFavorito(dto.favorito() ? "S" : "N");
         contato.setAtivo(dto.ativo() ? "S" : "N");
-        contato.setData_hora(new Date());
+        contato.setData_hora(LocalDateTime.now());
 
         contatoRepository.save(contato);
 
