@@ -5,6 +5,7 @@ import br.com.agendamento.api.dtos.ContatoResponseDTO;
 import br.com.agendamento.api.entities.Contato;
 import br.com.agendamento.api.services.ContatoService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -24,8 +25,9 @@ public class ContatoController {
     private ContatoService contatoService;
 
     @Operation(summary = "Retorna uma lista com todos os contatos")
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/")
-    public ResponseEntity<List<ContatoResponseDTO>> findAll(@RequestHeader(value = "Authorization", required = true) String authorizationHeader) {
+    public ResponseEntity<List<ContatoResponseDTO>> findAll() {
         List<ContatoResponseDTO> listContatos = contatoService.findAll();
         return ResponseEntity.ok().body(listContatos);
     }
