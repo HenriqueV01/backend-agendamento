@@ -1,5 +1,6 @@
 package br.com.agendamento.api.infra.security;
 
+import br.com.agendamento.api.infra.security.CachedRequest.CachedBodyHttpServletRequest;
 import br.com.agendamento.api.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -24,6 +25,11 @@ public class SecurityFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        //https://www.baeldung.com/spring-reading-httpservletrequest-multiple-times
+        /*CachedBodyHttpServletRequest cachedBodyHttpServletRequest =
+                new CachedBodyHttpServletRequest(request);*/
+
+
         var token = this.recoverToken(request);
         if(token != null){
             var login = tokenService.validateToken(token);
@@ -33,6 +39,10 @@ public class SecurityFilter extends OncePerRequestFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
         }
+
+
+
+
         filterChain.doFilter(request, response);
     }
 
