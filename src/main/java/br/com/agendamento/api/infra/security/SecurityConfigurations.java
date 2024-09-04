@@ -30,13 +30,13 @@ public class SecurityConfigurations {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/register").permitAll() //Tem que modificar para permitir apenas ADMIN
+                        .requestMatchers(HttpMethod.POST, "/auth/register").hasRole("ADMIN")
                         .requestMatchers(
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html"
                         ).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/*").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/contatos").hasRole("USER")
                         .requestMatchers(HttpMethod.POST, "/api/contatos").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
