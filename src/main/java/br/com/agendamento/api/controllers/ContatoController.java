@@ -25,21 +25,23 @@ public class ContatoController {
     @Autowired
     private ContatoService contatoService;
 
-    @Operation(summary = "Retorna uma lista com todos os contatos")
-    @SecurityRequirement(name = "bearerAuth")
+    @Operation(summary = "Retorna uma lista com todos os contatos.")
+    /*@SecurityRequirement(name = "bearerAuth")*/
     @GetMapping("/")
     public ResponseEntity<List<ContatoResponseDTO>> findAll() {
         List<ContatoResponseDTO> listContatos = contatoService.findAll();
         return ResponseEntity.ok().body(listContatos);
     }
 
+    @Operation(summary = "Busca contato por id.")
     @GetMapping(value = "/{id}")
     public ResponseEntity<ContatoResponseDTO> findById(@PathVariable Long id) {
         ContatoResponseDTO contato = contatoService.findById(id);
         return ResponseEntity.ok().body(contato);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(summary = "Cria um contato.")
+    /*@PreAuthorize("hasRole('ADMIN')")*/
     @PostMapping("/")
     public ResponseEntity<ContatoResponseDTO> insert(@Validated @RequestBody ContatoRequestDTO dto) throws ParseException {
         ContatoResponseDTO contatoDTO = contatoService.insert(dto);
@@ -47,6 +49,7 @@ public class ContatoController {
         return ResponseEntity.created(uri).body(contatoDTO);
     }
 
+    @Operation(summary = "Atualiza valores de um contato.")
     @PutMapping(value = "/{id}")
     public ResponseEntity<ContatoResponseDTO> update(@PathVariable Long id, @Validated @RequestBody ContatoRequestDTO dto) throws ParseException {
         ContatoResponseDTO contatoDTO = this.contatoService.findById(id); // Verificar se existe o contato.
@@ -56,6 +59,7 @@ public class ContatoController {
         return ResponseEntity.noContent().build();
     }
 
+    @Operation(summary = "Deleta um contato por id.")
     @DeleteMapping("/{id}")
     public ResponseEntity<ContatoResponseDTO> delete(@PathVariable("id") Long id){
         ContatoResponseDTO contatoDTO = this.contatoService.findById(id);

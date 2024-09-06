@@ -6,6 +6,7 @@ import br.com.agendamento.api.dtos.RegisterDTO;
 import br.com.agendamento.api.entities.User;
 import br.com.agendamento.api.infra.security.TokenService;
 import br.com.agendamento.api.repositories.UserRepository;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -29,9 +30,9 @@ public class AuthenticationController {
     @Autowired
     private TokenService tokenService;
 
+    @Operation(summary = "Autenticação por login e retorna um token.")
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data){
-
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
@@ -40,12 +41,14 @@ public class AuthenticationController {
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
+    @Operation(summary = "Registra a criação de um novo usuário.")
     @PostMapping("/register")
-    public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        if(this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+    public ResponseEntity register(@RequestBody RegisterDTO data){
+        //Retirando o @Valid para a requisição conseguir chegar ao endpoint e ser tratada.
+        String errorMessage = "Login ja existe.";
+        if(this.userRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().body(errorMessage);
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-
         User newUser = new User(data.login(), encryptedPassword, data.role());
 
         this.userRepository.save(newUser);

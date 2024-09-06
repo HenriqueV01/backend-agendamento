@@ -29,7 +29,6 @@ public class SecurityFilter extends OncePerRequestFilter {
         /*CachedBodyHttpServletRequest cachedBodyHttpServletRequest =
                 new CachedBodyHttpServletRequest(request);*/
 
-
         var token = this.recoverToken(request);
         if(token != null){
             var login = tokenService.validateToken(token);
@@ -37,11 +36,9 @@ public class SecurityFilter extends OncePerRequestFilter {
 
             var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
-
         }
 
-
-
+        //filterChain.doFilter(cachedBodyHttpServletRequest, response);
 
         filterChain.doFilter(request, response);
     }
@@ -51,10 +48,6 @@ public class SecurityFilter extends OncePerRequestFilter {
         if(authHeader == null) return null;
         return authHeader.replace("Bearer ", "");
     }
-
-
-
-
 
 
 

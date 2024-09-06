@@ -73,21 +73,14 @@ public class ContatoService {
     @Transactional
     public ContatoResponseDTO update(ContatoRequestDTO dto, Long id) throws ParseException {
 
-
-
         contatoRepository.findByCelular(dto.celular());
 
         Contato contato =  new Contato();
-        contato.setId(id);
 
+        contato.setId(id);
         contato.setNome(dto.nome());
         contato.setEmail(dto.email());
-//        if(contatoRepository.findByCelular(dto.celular()).isEmpty()){
-//            contato.setCelular(dto.celular());
-//        }
-
         contato.setCelular(dto.celular());
-
         contato.setTelefone(dto.telefone());
         contato.setFavorito(dto.favorito() ? "S" : "N");
         contato.setAtivo(dto.ativo() ? "S" : "N");
