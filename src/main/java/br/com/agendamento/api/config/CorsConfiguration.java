@@ -1,3 +1,4 @@
+/*
 package br.com.agendamento.api.config;
 
 import org.springframework.context.annotation.Bean;
@@ -27,3 +28,5 @@ public class CorsConfiguration implements WebMvcConfigurer {
 
 
 }
+*/
+//Implementado quando ainda não tinha o Spring Security

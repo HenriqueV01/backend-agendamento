@@ -38,7 +38,7 @@ public class AuthenticationController {
 
         var token = tokenService.genarateToken((User) auth.getPrincipal());
 
-        return ResponseEntity.ok(new LoginResponseDTO(token));
+        return ResponseEntity.ok(new LoginResponseDTO(token)); //Tratar para retornar em caso de erro.
     }
 
     @Operation(summary = "Registra a criação de um novo usuário.")
