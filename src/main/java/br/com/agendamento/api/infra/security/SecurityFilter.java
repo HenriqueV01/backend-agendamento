@@ -30,7 +30,8 @@ public class SecurityFilter extends OncePerRequestFilter {
                 new CachedBodyHttpServletRequest(request);*/
 
         var token = this.recoverToken(request);
-        if(token != null){
+        /*if(token != null){*/ //Não funcionou com (!= null).
+        if(token.trim().isEmpty()){
             var login = tokenService.validateToken(token);
             UserDetails user = userRepository.findByLogin(login);
 
