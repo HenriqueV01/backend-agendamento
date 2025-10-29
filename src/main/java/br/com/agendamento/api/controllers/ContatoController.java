@@ -25,7 +25,7 @@ public class ContatoController {
     @Autowired
     private ContatoService contatoService;
 
-    @Operation(summary = "Retorna uma lista com todos os contatos.")
+    @Operation(summary = "Retorna uma lista teste com todos os contatos.")
     /*@SecurityRequirement(name = "bearerAuth")*/
     @GetMapping("/")
     public ResponseEntity<List<ContatoResponseDTO>> findAll() {
